@@ -1,0 +1,99 @@
+@media screen and (min-width: 800px) {
+  .what_we_do .items {
+    flex-direction: row;
+  }
+}
+@media screen and (max-width: 600px) {
+  footer .footer__logo {
+    margin: 100px 40px;
+  }
+  footer .footer__links__container {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  footer .footer__links__container .footer__links {
+    width: 100%;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+  footer .footer__links__container .footer__links:last-child {
+    margin-bottom: 0;
+  }
+  footer .footer__links__container .footer__links .link__header {
+    text-align: center;
+  }
+  footer .footer__links__container .footer__links .links__container {
+    align-items: center;
+  }
+}
+@media screen and (max-width: 450px) {
+  footer .footer__logo {
+    margin: 50px 0;
+    flex-direction: column;
+  }
+  footer .footer__logo svg:nth-child(1) {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+  footer .footer__logo svg:nth-child(2) {
+    margin-top: 5px;
+    margin-left: 0;
+  }
+}
+@media screen and (max-width: 350px) {
+  footer .footer__links__container {
+    margin-bottom: 100px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .projects_section .projects_container > span {
+    font-size: 25px;
+  }
+}
+@media screen and (max-width: 350px) {
+  .projects_section .projects_container > span {
+    font-size: 20px;
+  }
+}
+@media screen and (max-width: 600px) {
+  header .bgImage .logo {
+    flex-direction: column;
+    width: 60%;
+  }
+  header .bgImage .logo svg:nth-child(1) {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+  header .bgImage .logo svg:nth-child(2) {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+}
+nav {
+  height: 100vh;
+  background-color: #00793b;
+  transition: transform 0.8s ease;
+  z-index: 5;
+  transform: translateY(0);
+}
+nav:not(.show) {
+  transform: translateY(-100%);
+}
+
+@media screen and (max-width: 600px) {
+  nav .logo {
+    flex-direction: column;
+    max-width: 80%;
+  }
+  nav .logo svg:nth-child(1) {
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+  nav .logo svg:nth-child(2) {
+    margin-top: 10px;
+    margin-left: 0;
+  }
+}
+
+/*# sourceMappingURL=media.css.map */
