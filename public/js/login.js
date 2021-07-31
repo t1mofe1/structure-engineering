@@ -11,17 +11,26 @@ form.addEventListener('submit', async (e) => {
 			password,
 		})
 		.then((res) => {
-			let { secret, error } = res.data;
-			if (error) {
-				if (error === 'wrong_login') alert('Wrong Username');
-				else if (error === 'wrong_password') alert('Wrong Password');
-				else alert(`Unknown error! Please contact server admin! Code: ${error}`);
-			} else {
-				window.location.href = `/${login}/${secret}`;
-			}
+			const { secret } = res.data;
+			window.location.href = `/${login}/${secret}`;
 		})
 		.catch((err) => {
-			alert(`Unknown error occured! Please contact server admin and provide next message:\n${err.message}`);
-			console.log(err);
+			const error = {
+				err: { message: err.message, stack: err.stack },
+				res: {
+					status: {
+						code: err.response.status,
+						text: err.response.statusText,
+					},
+					data: err.response.data,
+				},
+				req: JSON.parse(err.config.data),
+			};
+
+			console.log(error);
+
+			if (error.res?.data?.error === 'wrong_login') alert('Wrong Username');
+			else if (error.res?.data?.error === 'wrong_password') alert('Wrong Password');
+			else alert(`Unknown error occured! Please contact server admin and provide next message:\n${JSON.stringify(error)}`);
 		});
 });
