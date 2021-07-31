@@ -98,9 +98,6 @@ nav {
 	height: 100vh;
 	background-color: $mainGreen;
 	transition: transform 0.8s ease;
-
-	z-index: 5;
-
 	transform: translateY(0);
 
 	&:not(.show) {

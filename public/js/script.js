@@ -1,12 +1,20 @@
 const navbar = document.querySelector('nav');
 const burger = document.querySelector('#hamburger');
 const projects = Array.from(document.querySelectorAll('.projects'));
+const header = document.querySelector('header');
 
 /* ======= BURGER MENU ======= */
-burger.addEventListener('click', () => {
+function burgerHandler() {
 	burger.classList.toggle('opened');
 	navbar.classList.toggle('show');
-});
+	document.body.classList.toggle('lock');
+}
+
+burger.addEventListener('click', burgerHandler);
+/* =========================== */
+
+/* == NAVBAR CLICK HANDLING == */
+Array.from(navbar.querySelectorAll('li')).forEach((link) => link.addEventListener('click', burgerHandler));
 /* =========================== */
 
 /* ======= IMG LOADER ======= */
@@ -33,7 +41,21 @@ projects.forEach((projectContainer, i) => {
 /* ========================== */
 
 /* ==== PROJECTS PREVIEW ==== */
-// projects.forEach((projectsContainer) => {
-// 	Array.from(projectsContainer.children).forEach((project) => {});
-// });
+projects.forEach((projectsContainer) =>
+	Array.from(projectsContainer.children).forEach((project) => project.children[0].addEventListener('click', () => alert('Projektide lisateave pole veel lisatud!'))),
+);
+/* ========================== */
+
+/* ==== PROJECTS ADDRESS ==== */
+projects.forEach((projectsContainer) =>
+	Array.from(projectsContainer.children).forEach((project) =>
+		project.children[1].children[1].addEventListener('click', () => window.open(`https://maps.google.com/?q=${project.children[1].children[1].textContent}`)),
+	),
+);
+/* ========================== */
+
+/* = UURIMA button handling = */
+header.querySelector('button').addEventListener('click', () => {
+	window.location.hash = 'projects';
+});
 /* ========================== */

@@ -51,3 +51,6 @@ nbproject
 .vs
 .vscode
 package-lock.json
+
+########################### SCSS
+scss

@@ -9,10 +9,18 @@
 	font-family: Montserrat;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	width: 100vw;
 	height: 100vh;
 	overflow: overlay;
+
+	&.lock {
+		overflow: hidden;
+	}
 }
 
 section,
@@ -168,6 +176,7 @@ footer {
 }
 
 nav {
+	z-index: 100;
 	width: 100vw;
 	position: fixed;
 	display: flex;
@@ -215,30 +224,39 @@ nav {
 			cursor: pointer;
 			font-size: 36px;
 			margin-bottom: 50px;
-			color: $mainBlack;
-			transition: color 0.5s;
 
-			&:hover {
-				color: #fff;
+			a {
+				text-align: center;
+				cursor: pointer;
+				font-size: 36px;
+				color: $mainBlack;
+				text-decoration: none;
+				transition: color 0.5s;
+				display: inline-block;
+
+				&:hover {
+					color: #fff;
+				}
+
+				&:after {
+					display: inline-block;
+					content: '';
+					display: block;
+					margin: auto;
+					height: 3px;
+					background-color: transparent;
+					width: 0%;
+					transition: width 0.5s ease, background-color 0.4s ease;
+				}
+
+				&:hover:after {
+					background-color: #fff;
+					width: 100%;
+				}
 			}
 
 			&:last-child {
 				margin-bottom: 0;
-			}
-
-			&:after {
-				content: '';
-				display: block;
-				margin: auto;
-				height: 3px;
-				background-color: transparent;
-				width: 0%;
-				transition: width 0.5s ease, background-color 0.4s ease;
-			}
-
-			&:hover:after {
-				background-color: #fff;
-				width: 100%;
 			}
 		}
 	}
@@ -448,7 +466,7 @@ button {
 
 			.projects {
 				width: 100%;
-				height: 425 px;
+				height: 425px;
 				display: flex;
 				flex-direction: row;
 				justify-content: flex-start;
@@ -456,7 +474,6 @@ button {
 				overflow-x: auto;
 				scroll-snap-type: x mandatory;
 				scroll-behavior: smooth;
-				// -webkit-overflow-scrolling: touch;
 
 				.project {
 					scroll-snap-align: center;
@@ -481,32 +498,15 @@ button {
 						justify-content: center;
 						align-items: center;
 						max-height: 250px;
+						min-height: 225px;
 						cursor: pointer;
 
 						> img {
 							object-fit: cover;
-							width: 100%;
-							min-height: 225px;
-							height: 100%;
-							max-width: 100%;
-							max-height: 100%;
 							display: block;
-
-							// &::after {
-							// 	width: 100%;
-							// 	height: 100%;
-							// 	z-index: 55;
-							// 	display: flex;
-							// 	justify-content: center;
-							// 	align-items: center;
-							// 	background-color: rgba(0, 0, 0, 0.84);
-							// 	content: '<svg viewBox="0 0 55 57" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M22.1085 38.9591C31.0608 38.9591 38.318 31.7019 38.318 22.7496C38.318 13.7974 31.0608 6.54017 22.1085 6.54017C13.1563 6.54017 5.89906 13.7974 5.89906 22.7496C5.89906 31.7019 13.1563 38.9591 22.1085 38.9591ZM22.1085 44.7C34.2314 44.7 44.0589 34.8725 44.0589 22.7496C44.0589 10.6268 34.2314 0.799316 22.1085 0.799316C9.9857 0.799316 0.158203 10.6268 0.158203 22.7496C0.158203 34.8725 9.9857 44.7 22.1085 44.7Z" fill="#B3D7C4"/><path fill-rule="evenodd" clip-rule="evenodd" d="M33.9245 36.2979C35.0454 35.1769 36.8629 35.1769 37.9839 36.2979L52.5969 50.9109C53.7178 52.0319 53.7178 53.8493 52.5969 54.9703C51.4759 56.0913 49.6584 56.0913 48.5375 54.9703L33.9245 40.3573C32.8035 39.2363 32.8035 37.4189 33.9245 36.2979Z" fill="#B3D7C4"/></svg>';
-							// 	visibility: hidden;
-							// }
-
-							// &:hover::after {
-							// 	visibility: visible;
-							// }
+							width: 100%;
+							height: 100%;
+							max-height: 250px;
 						}
 
 						> div {
@@ -543,10 +543,6 @@ button {
 						height: 100%;
 						margin-top: 25px;
 
-						span {
-							width: 100%;
-						}
-
 						> span:nth-child(1) {
 							font-weight: 700;
 							font-size: 22px;
@@ -557,6 +553,23 @@ button {
 						> span:nth-child(2) {
 							font-size: 20px;
 							color: $mainBlack;
+							cursor: pointer;
+
+							&:after {
+								display: inline-block;
+								content: '';
+								display: block;
+								margin: auto;
+								height: 3px;
+								background-color: transparent;
+								width: 0%;
+								transition: width 0.5s ease, background-color 0.4s ease;
+							}
+
+							&:hover:after {
+								background-color: #111;
+								width: 100%;
+							}
 						}
 					}
 				}

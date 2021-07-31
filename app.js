@@ -44,6 +44,12 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
+if (process.env.NODE_ENV !== 'production') {
+	app.get('/test', async (req, res) => {
+		res.sendFile(__dirname + '/views/index.html');
+	});
+}
+
 app.get('/', async (req, res) => {
 	res.sendFile(__dirname + '/views/login.html');
 });
