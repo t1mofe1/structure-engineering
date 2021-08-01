@@ -5,50 +5,48 @@ const { nanoid } = require('nanoid');
 
 const { db } = require('./firebase');
 
-db.users
-	.get()
-	.then(async (q) => {
+async function secretUpdate() {
+	await db.users.get().then(async (q) => {
 		q.docs.forEach(async (doc) => {
-			await doc.ref.set(
-				{
-					secret: nanoid(50),
-				},
-				{
-					merge: true,
-				},
-			);
+			if (doc.data().secretTimestamp ?? 0 < Date.now()) {
+				await doc.ref.set(
+					{
+						secret: nanoid(50),
+						secretTimestamp: Date.now(),
+					},
+					{
+						merge: true,
+					},
+				);
+			}
 		});
-	})
-	.then(async () => {
-		setInterval(async () => {
-			await db.users.get().then(async (q) => {
-				q.docs.forEach(async (doc) => {
-					doc.ref.set(
-						{
-							secret: nanoid(50),
-						},
-						{
-							merge: true,
-						},
-					);
-				});
-			});
-		}, 1000 * 60 * 60);
 	});
+}
+secretUpdate().then(async () => {
+	setInterval(async () => {
+		await secretUpdate();
+	}, 1000 * 60 * 60);
+});
 
-// app.use(require('morgan')('dev'));
+if (process.env.NODE_ENV !== 'production') app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('cors')());
-app.use(require('helmet')());
+
+const cspRules = require('helmet').contentSecurityPolicy.getDefaultDirectives();
+delete cspRules['upgrade-insecure-requests'];
+cspRules['script-src'] = ["'self'", 'https:'];
+app.use(
+	require('helmet')({
+		contentSecurityPolicy: {
+			directives: cspRules,
+		},
+	}),
+);
 app.use(express.json());
 
 app.use(express.static('public'));
 
-if (process.env.NODE_ENV !== 'production') {
-	app.get('/test', async (req, res) => {
-		res.sendFile(__dirname + '/views/index.html');
-	});
-}
+if (process.env.NODE_ENV !== 'production') app.get('/test', async (req, res) => res.sendFile(__dirname + '/views/index.html'));
 
 app.get('/', async (req, res) => {
 	res.sendFile(__dirname + '/views/login.html');
@@ -134,4 +132,9 @@ S:::::::::::::::SS E::::::::::::::::::::ER::::::R     R:::::R           V:::V   
  SSSSSSSSSSSSSSS   EEEEEEEEEEEEEEEEEEEEEERRRRRRRR     RRRRRRR            VVV            EEEEEEEEEEEEEEEEEEEEEERRRRRRRR     RRRRRRR     EEEEEEEEEEEEEEEEEEEEEERRRRRRRR     RRRRRRRRRRRRRRR     RRRRRRR     OOOOOOOOO     RRRRRRRR     RRRRRRR</pre>`);
 });
 
-app.listen(process.env.PORT || 3000);
+const port = process.env.PORT ?? 3000;
+const ip = Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat((i.family === 'IPv4' && !i.internal && i.address) || []), [])), [])[0];
+
+app.listen(port, ip, () => {
+	console.log(`Server listening at http://${ip}:${port}`);
+});
