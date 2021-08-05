@@ -54,3 +54,5 @@ package-lock.json
 
 ########################### SCSS
 scss
+public/css/variables.css
+public/css/variables.css.map

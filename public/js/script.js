@@ -49,13 +49,28 @@ projects.forEach((projectsContainer) =>
 /* ==== PROJECTS ADDRESS ==== */
 projects.forEach((projectsContainer) =>
 	Array.from(projectsContainer.children).forEach((project) =>
-		project.children[1].children[1].addEventListener('click', () => window.open(`https://maps.google.com/?q=${project.children[1].children[1].textContent}`)),
+		project.children[1].children[1].addEventListener('click', () => window.open(generateGoogleMapsLink(project.children[1].children[1].textContent))),
 	),
 );
 /* ========================== */
 
 /* = UURIMA button handling = */
 header.querySelector('button').addEventListener('click', () => {
-	window.location.hash = 'projects';
+	document.querySelector('#projects').scrollIntoView({ behavior: 'smooth' });
 });
+/* ========================== */
+
+/* = NAVBAR CLICKS HANDLING = */
+Array.from(navbar.querySelectorAll('a')).forEach((link) => link.addEventListener('click', () => document.querySelector(link.dataset.link).scrollIntoView({ behavior: 'smooth' })));
+/* ========================== */
+
+/* ===== FOOTER ADDRESS ===== */
+const address = document.querySelector('.footer__links__container > div:nth-child(2) > div > span:nth-child(3)');
+address.addEventListener('click', () => window.open(generateGoogleMapsLink(address.textContent)));
+/* ========================== */
+
+/* == MAPS LINKS GENERATOR == */
+function generateGoogleMapsLink(query) {
+	return `https://maps.google.com/?q=${query}`;
+}
 /* ========================== */

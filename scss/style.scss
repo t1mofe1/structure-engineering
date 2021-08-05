@@ -6,21 +6,14 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: Montserrat;
-}
 
-html {
-	scroll-behavior: smooth;
+	font-family: Montserrat;
 }
 
 body {
 	width: 100vw;
 	height: 100vh;
 	overflow: overlay;
-
-	&.lock {
-		overflow: hidden;
-	}
 }
 
 section,
@@ -194,7 +187,6 @@ nav {
 		max-height: 400px;
 		padding: 0 24px;
 		width: 100%;
-		// height: 100%;
 		margin: 0 32px;
 
 		svg:nth-child(1) {
@@ -209,11 +201,6 @@ nav {
 			fill: $mainBlack;
 			transition: fill 0.5s;
 		}
-
-		svg:hover path {
-			/* or &:hover svg path */
-			fill: #fff;
-		}
 	}
 
 	ul {
@@ -223,7 +210,6 @@ nav {
 			text-align: center;
 			cursor: pointer;
 			font-size: 36px;
-			margin-bottom: 50px;
 
 			a {
 				text-align: center;
@@ -231,12 +217,7 @@ nav {
 				font-size: 36px;
 				color: $mainBlack;
 				text-decoration: none;
-				transition: color 0.5s;
 				display: inline-block;
-
-				&:hover {
-					color: #fff;
-				}
 
 				&:after {
 					display: inline-block;
@@ -250,7 +231,7 @@ nav {
 				}
 
 				&:hover:after {
-					background-color: #fff;
+					background-color: $mainGreen;
 					width: 100%;
 				}
 			}
@@ -323,24 +304,24 @@ header {
 		align-items: center;
 		flex-direction: column;
 
+		> span {
+			text-align: center;
+			color: $mainBlack;
+		}
+
 		> span:nth-child(1) {
 			font-weight: 700;
 			font-size: 40px;
-			text-align: center;
 			letter-spacing: -1.28px;
-			color: $mainBlack;
 		}
 
 		> span:nth-child(2) {
 			margin-top: 20px;
 			font-size: 19px;
-			text-align: center;
-			color: $mainBlack;
 		}
 
 		> button {
 			margin-top: 40px;
-			margin-bottom: 80px;
 		}
 	}
 }
@@ -362,13 +343,14 @@ button {
 }
 
 .what_we_do {
+	padding-top: 80px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 
 	> span {
-		font-weight: bold;
+		font-weight: 700;
 		font-size: 30px;
 		text-align: center;
 		letter-spacing: -1.28px;
@@ -376,7 +358,7 @@ button {
 	}
 
 	.items {
-		padding: 60px 0;
+		padding-top: 60px;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
@@ -384,12 +366,11 @@ button {
 		flex-direction: column;
 
 		.item {
-			max-width: 100%;
 			display: flex;
 			justify-content: flex-start;
 			align-items: center;
 			flex-direction: column;
-			max-width: 550px;
+			max-width: 450px;
 			min-height: 225px;
 			flex-basis: 33.3%;
 			padding: 15px;
@@ -425,11 +406,11 @@ button {
 }
 
 .projects_section {
+	padding-top: 60px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: 50px;
 
 	> span {
 		max-width: 100%;
@@ -469,18 +450,24 @@ button {
 				height: 425px;
 				display: flex;
 				flex-direction: row;
-				justify-content: flex-start;
+				// justify-content: flex-start;
 				align-items: flex-start;
 				overflow-x: auto;
 				scroll-snap-type: x mandatory;
 				scroll-behavior: smooth;
 
+				.project:first-child {
+					margin-left: auto;
+				}
+
+				.project:last-child {
+					margin-right: auto;
+				}
+
 				.project {
 					scroll-snap-align: center;
-					width: calc(100% / 4);
-					min-width: 275px;
-					max-width: 500px;
-					height: 100%;
+					min-width: 300px;
+					width: 300px;
 					margin-right: 25px;
 					justify-content: flex-start;
 					transform-origin: center center;
@@ -488,9 +475,9 @@ button {
 
 					display: flex;
 
-					&:last-child {
-						margin-right: 0;
-					}
+					// &:last-child {
+					// 	margin-right: 0;
+					// }
 
 					&__img {
 						position: relative;
@@ -607,6 +594,9 @@ button {
 }
 
 .contact_us {
+	padding: 50px 35px;
+	padding-top: 80px;
+
 	width: 100%;
 	height: 100%;
 
@@ -616,10 +606,7 @@ button {
 
 	background-image: url(/img/contactBG.png);
 	background-position: left;
-	background-size: cover;
 	background-repeat: no-repeat;
-
-	padding: 50px 35px;
 
 	> form {
 		display: flex;
@@ -788,12 +775,9 @@ footer {
 	}
 
 	.footer__copyright {
+		text-align: center;
 		margin-bottom: 50px;
 		width: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
 
 		> span {
 			font-size: 15px;
@@ -801,9 +785,12 @@ footer {
 			color: #d9dbe1;
 			opacity: 0.7;
 
-			margin-bottom: 15px;
-			&:last-child {
-				margin-bottom: 0;
+			&:first-child {
+				margin-right: 1px;
+			}
+
+			&:nth-child(2) {
+				margin-left: 1px;
 			}
 		}
 	}

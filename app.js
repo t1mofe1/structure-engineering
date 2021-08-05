@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 
 const { nanoid } = require('nanoid');
-
 const { db } = require('./firebase');
 
 async function secretUpdate() {
@@ -32,18 +31,17 @@ if (process.env.NODE_ENV !== 'production') app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('cors')());
 
-const cspRules = require('helmet').contentSecurityPolicy.getDefaultDirectives();
-delete cspRules['upgrade-insecure-requests'];
-cspRules['script-src'] = ["'self'", 'https:'];
+const helmetOptions = require('helmet').contentSecurityPolicy.getDefaultDirectives();
+if (process.env.NODE_ENV !== 'production') delete helmetOptions['upgrade-insecure-requests'];
 app.use(
 	require('helmet')({
 		contentSecurityPolicy: {
-			directives: cspRules,
+			directives: helmetOptions,
 		},
 	}),
 );
-app.use(express.json());
 
+app.use(express.json());
 app.use(express.static('public'));
 
 if (process.env.NODE_ENV !== 'production') app.get('/test', async (req, res) => res.sendFile(__dirname + '/views/index.html'));
@@ -132,9 +130,11 @@ S:::::::::::::::SS E::::::::::::::::::::ER::::::R     R:::::R           V:::V   
  SSSSSSSSSSSSSSS   EEEEEEEEEEEEEEEEEEEEEERRRRRRRR     RRRRRRR            VVV            EEEEEEEEEEEEEEEEEEEEEERRRRRRRR     RRRRRRR     EEEEEEEEEEEEEEEEEEEEEERRRRRRRR     RRRRRRRRRRRRRRR     RRRRRRR     OOOOOOOOO     RRRRRRRR     RRRRRRR</pre>`);
 });
 
-const port = process.env.PORT ?? 3000;
-const ip = Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat((i.family === 'IPv4' && !i.internal && i.address) || []), [])), [])[0];
+const options = {
+	port: process.env.PORT ?? 3000,
+};
+if (process.env.NODE_ENV !== 'production') {
+	options.ip = Object.values(require('os').networkInterfaces()).reduce((r, list) => r.concat(list.reduce((rr, i) => rr.concat((i.family === 'IPv4' && !i.internal && i.address) || []), [])), [])[0];
+}
 
-app.listen(port, ip, () => {
-	console.log(`Server listening at http://${ip}:${port}`);
-});
+app.listen(...Object.values(options), () => console.log(process.env.NODE_ENV !== 'production' ? `Server listening at http://${options.ip}:${options.port}` : `Server started at port ${options.port}`));
