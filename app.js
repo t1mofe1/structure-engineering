@@ -1,33 +1,7 @@
 const express = require('express');
 const app = express();
 
-const { nanoid } = require('nanoid');
-const { db } = require('./firebase');
-
-async function secretUpdate() {
-	await db.users.get().then(async (q) => {
-		q.docs.forEach(async (doc) => {
-			if (doc.data().secretTimestamp ?? 0 < Date.now()) {
-				await doc.ref.set(
-					{
-						secret: nanoid(50),
-						secretTimestamp: Date.now(),
-					},
-					{
-						merge: true,
-					},
-				);
-			}
-		});
-	});
-}
-secretUpdate().then(async () => {
-	setInterval(async () => {
-		await secretUpdate();
-	}, 1000 * 60 * 60);
-});
-
-if (process.env.NODE_ENV !== 'production') app.use(require('morgan')('dev'));
+app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('cors')());
 
@@ -44,49 +18,8 @@ app.use(
 app.use(express.json());
 app.use(express.static('public'));
 
-if (process.env.NODE_ENV !== 'production') app.get('/test', async (req, res) => res.sendFile(__dirname + '/views/index.html'));
-
 app.get('/', async (req, res) => {
-	res.sendFile(__dirname + '/views/login.html');
-});
-
-app.post('/login', async (req, res) => {
-	const { login, password } = req.body;
-
-	await db.users
-		.where('login', '==', login)
-		.get()
-		.then(async (q) => {
-			if (q.empty) {
-				return res.status(403).json({
-					error: 'wrong_login',
-				});
-			} else {
-				if (q.docs[0].data().password === password) {
-					return res.status(200).json({
-						secret: q.docs[0].data().secret,
-					});
-				} else {
-					return res.status(403).json({
-						error: 'wrong_password',
-					});
-				}
-			}
-		});
-});
-
-app.get('/:login/:secret', async (req, res) => {
-	await db.users
-		.where('login', '==', req.params.login)
-		.get()
-		.then(async (q) => {
-			if (!q.empty) {
-				if (q.docs[0].data().secret === req.params.secret) {
-					return res.status(200).sendFile(__dirname + '/views/index.html');
-				}
-			}
-			return res.redirect('/');
-		});
+	res.sendFile(__dirname + '/views/index.html');
 });
 
 app.use(async (req, res, next) => {
